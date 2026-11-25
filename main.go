@@ -54,9 +54,29 @@ func main() {
 	categories := []Category{category1, category2}
 	products := []Product{product1, product2}
 
-	fmt.Println("Категории:")
-	fmt.Println(categories)
+	showCategories(categories)
+	showProducts(products)
+}
 
+func showCategories(categories []Category) {
+	fmt.Println("Категории:")
+
+	for _, category := range categories {
+		fmt.Println("Название:", category.Name)
+		fmt.Println("Описание:", category.Description)
+	}
+}
+
+func showProducts(products []Product) {
 	fmt.Println("Продукты:")
-	fmt.Println(products)
+
+	for _, product := range products {
+		if product.IsActive {
+			fmt.Println("Название:", product.Name)
+			fmt.Println("Цена:", product.Price, "руб.")
+			fmt.Println("Количество:", product.Quantity, "шт.")
+		} else {
+			fmt.Println("Товар", product.Name, "недоступен для покупки")
+		}
+	}
 }
