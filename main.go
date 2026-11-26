@@ -76,6 +76,19 @@ func main() {
 	categories := []Category{category1, category2}
 	products := []Product{product1, product2}
 
+	product3 := Product{
+		ID:          3,
+		Name:        "Сыр",
+		Description: "Сыр российский",
+		Price:       250,
+		Quantity:    12,
+		CategoryID:  1,
+		IsActive:    true,
+	}
+
+	products = append(products, product3)
+	fmt.Println("Всего видов продуктов:", len(products))
+
 	showCategories(categories)
 	showProducts(products)
 }
