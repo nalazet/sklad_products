@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Product struct {
 	ID          int
@@ -52,8 +55,23 @@ func main() {
 	}
 
 	fmt.Println("Количество молока до поставки:", product1.Quantity)
-	product1.AddQuantity(10)
+
+	err := product1.AddQuantity(10)
+
+	if err != nil {
+		fmt.Println("Ошибка", err)
+	}
+
 	fmt.Println("Количество молока после поставки:", product1.Quantity)
+
+	err = product1.RemoveQuantity(5)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Товар успешно списан")
+		fmt.Println("Остаток молока:", product1.Quantity)
+	}
 
 	categories := []Category{category1, category2}
 	products := []Product{product1, product2}
@@ -85,6 +103,27 @@ func showProducts(products []Product) {
 	}
 }
 
-func (p *Product) AddQuantity(amount int) {
+func (p *Product) AddQuantity(amount int) error {
+	if amount <= 0 {
+		return errors.New("Количество должно быть больше нуля")
+	}
 	p.Quantity = p.Quantity + amount
+
+	return nil
+}
+
+func (p *Product) RemoveQuantity(amount int) error {
+	if amount <= 0 {
+		return errors.New("Количество товаров должно быть больше нуля")
+	}
+	if !p.IsActive {
+		return errors.New("Товар недоступен для покупки")
+	}
+	if amount > p.Quantity {
+		return errors.New("Недостаточно товара на складе")
+	}
+
+	p.Quantity = p.Quantity - amount
+
+	return nil
 }
