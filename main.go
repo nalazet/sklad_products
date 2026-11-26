@@ -24,6 +24,11 @@ type Category struct {
 	Description string
 }
 
+type StockManager interface {
+	AddQuantity(amount int) error
+	RemoveQuantity(amount int) error
+}
+
 func main() {
 	category1 := Category{
 		ID:          1,
@@ -57,9 +62,11 @@ func main() {
 		IsActive:    true,
 	}
 
+	var stock StockManager = &product1
+
 	fmt.Println("Количество молока до поставки:", product1.Quantity)
 
-	err := product1.AddQuantity(10)
+	err := stock.AddQuantity(10)
 
 	if err != nil {
 		fmt.Println("Ошибка", err)
