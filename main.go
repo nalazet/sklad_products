@@ -5,18 +5,21 @@ import (
 	"fmt"
 )
 
+type ProductID = int
+type CategoryID = int
+
 type Product struct {
-	ID          int
+	ID          ProductID
 	Name        string
 	Description string
 	Price       int
 	Quantity    int
-	CategoryID  int
+	CategoryID  CategoryID
 	IsActive    bool
 }
 
 type Category struct {
-	ID          int
+	ID          CategoryID
 	Name        string
 	Description string
 }
@@ -104,7 +107,7 @@ func showCategories(categories []Category) {
 	}
 }
 
-func showProducts(products []Product, categoryMap map[int]string) {
+func showProducts(products []Product, categoryMap map[CategoryID]string) {
 	fmt.Println("Продукты:")
 
 	for _, product := range products {
@@ -152,7 +155,7 @@ func (p *Product) RemoveQuantity(amount int) error {
 }
 
 func createCategoryMap(categories []Category) map[int]string {
-	categoryMap := make(map[int]string)
+	categoryMap := make(map[CategoryID]string)
 
 	for _, category := range categories {
 		categoryMap[category.ID] = category.Name
