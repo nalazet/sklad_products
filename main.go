@@ -51,6 +51,10 @@ func main() {
 		IsActive:    true,
 	}
 
+	fmt.Println("Количество молока до поставки:", product1.Quantity)
+	product1.AddQuantity(10)
+	fmt.Println("Количество молока после поставки:", product1.Quantity)
+
 	categories := []Category{category1, category2}
 	products := []Product{product1, product2}
 
@@ -79,4 +83,8 @@ func showProducts(products []Product) {
 			fmt.Println("Товар", product.Name, "недоступен для покупки")
 		}
 	}
+}
+
+func (p *Product) AddQuantity(amount int) {
+	p.Quantity = p.Quantity + amount
 }
