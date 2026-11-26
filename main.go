@@ -89,8 +89,10 @@ func main() {
 	products = append(products, product3)
 	fmt.Println("Всего видов продуктов:", len(products))
 
+	categoryMap := createCategoryMap(categories)
+
 	showCategories(categories)
-	showProducts(products)
+	showProducts(products, categoryMap)
 }
 
 func showCategories(categories []Category) {
@@ -102,7 +104,7 @@ func showCategories(categories []Category) {
 	}
 }
 
-func showProducts(products []Product) {
+func showProducts(products []Product, categoryMap map[int]string) {
 	fmt.Println("Продукты:")
 
 	for _, product := range products {
@@ -110,6 +112,14 @@ func showProducts(products []Product) {
 			fmt.Println("Название:", product.Name)
 			fmt.Println("Цена:", product.Price, "руб.")
 			fmt.Println("Количество:", product.Quantity, "шт.")
+
+			categoryName, ok := categoryMap[product.CategoryID]
+
+			if ok {
+				fmt.Println("Категория:", categoryName)
+			} else {
+				fmt.Println("Категория не найдена")
+			}
 		} else {
 			fmt.Println("Товар", product.Name, "недоступен для покупки")
 		}
@@ -139,4 +149,13 @@ func (p *Product) RemoveQuantity(amount int) error {
 	p.Quantity = p.Quantity - amount
 
 	return nil
+}
+
+func createCategoryMap(categories []Category) map[int]string {
+	categoryMap := make(map[int]string)
+
+	for _, category := range categories {
+		categoryMap[category.ID] = category.Name
+	}
+	return categoryMap
 }
