@@ -61,6 +61,22 @@ func main() {
 	}
 
 	categories := []models.Category{category1, category2}
+
+	category3 := models.Category{
+		ID:          3,
+		Name:        "Овощи",
+		Description: "Свежие овощи",
+	}
+
+	categories, err = storage.AddCategory(categories, category3)
+
+	if err != nil {
+		fmt.Println("Ошбка:", err)
+	} else {
+		fmt.Println("Категория успешно добавлена")
+	}
+
+	fmt.Println("Всего категорий:", len(categories))
 	products := []models.Product{product1, product2}
 
 	product3 := models.Product{
