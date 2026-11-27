@@ -1,48 +1,25 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"sklad_products/models"
+	"sklad_products/storage"
 )
 
-type ProductID = int
-type CategoryID = int
-
-type Product struct {
-	ID          ProductID
-	Name        string
-	Description string
-	Price       int
-	Quantity    int
-	CategoryID  CategoryID
-	IsActive    bool
-}
-
-type Category struct {
-	ID          CategoryID
-	Name        string
-	Description string
-}
-
-type StockManager interface {
-	AddQuantity(amount int) error
-	RemoveQuantity(amount int) error
-}
-
 func main() {
-	category1 := Category{
+	category1 := models.Category{
 		ID:          1,
 		Name:        "Молочные продукты",
 		Description: "Молоко, сыр, йогурты",
 	}
 
-	category2 := Category{
+	category2 := models.Category{
 		ID:          2,
 		Name:        "Выпечка",
 		Description: "Хлебобулочные и кондитерские изделия",
 	}
 
-	product1 := Product{
+	product1 := models.Product{
 		ID:          1,
 		Name:        "Молоко",
 		Description: "Молоко 3.2%",
@@ -52,7 +29,7 @@ func main() {
 		IsActive:    true,
 	}
 
-	product2 := Product{
+	product2 := models.Product{
 		ID:          2,
 		Name:        "Хлеб",
 		Description: "Белый хлеб",
@@ -62,7 +39,7 @@ func main() {
 		IsActive:    true,
 	}
 
-	var stock StockManager = &product1
+	var stock models.StockManager = &product1
 
 	fmt.Println("Количество молока до поставки:", product1.Quantity)
 
@@ -83,10 +60,10 @@ func main() {
 		fmt.Println("Остаток молока:", product1.Quantity)
 	}
 
-	categories := []Category{category1, category2}
-	products := []Product{product1, product2}
+	categories := []models.Category{category1, category2}
+	products := []models.Product{product1, product2}
 
-	product3 := Product{
+	product3 := models.Product{
 		ID:          3,
 		Name:        "Сыр",
 		Description: "Сыр российский",
@@ -96,7 +73,14 @@ func main() {
 		IsActive:    true,
 	}
 
-	products = append(products, product3)
+	products, err = storage.AddProduct(products, product3)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Продукт успешно добавлен")
+	}
+
 	fmt.Println("Всего видов продуктов:", len(products))
 
 	categoryMap := createCategoryMap(categories)
@@ -105,7 +89,7 @@ func main() {
 	showProducts(products, categoryMap)
 }
 
-func showCategories(categories []Category) {
+func showCategories(categories []models.Category) {
 	fmt.Println("Категории:")
 
 	for _, category := range categories {
@@ -114,7 +98,7 @@ func showCategories(categories []Category) {
 	}
 }
 
-func showProducts(products []Product, categoryMap map[CategoryID]string) {
+func showProducts(products []models.Product, categoryMap map[models.CategoryID]string) {
 	fmt.Println("Продукты:")
 
 	for _, product := range products {
@@ -136,33 +120,8 @@ func showProducts(products []Product, categoryMap map[CategoryID]string) {
 	}
 }
 
-func (p *Product) AddQuantity(amount int) error {
-	if amount <= 0 {
-		return errors.New("Количество должно быть больше нуля")
-	}
-	p.Quantity = p.Quantity + amount
-
-	return nil
-}
-
-func (p *Product) RemoveQuantity(amount int) error {
-	if amount <= 0 {
-		return errors.New("Количество товаров должно быть больше нуля")
-	}
-	if !p.IsActive {
-		return errors.New("Товар недоступен для покупки")
-	}
-	if amount > p.Quantity {
-		return errors.New("Недостаточно товара на складе")
-	}
-
-	p.Quantity = p.Quantity - amount
-
-	return nil
-}
-
-func createCategoryMap(categories []Category) map[int]string {
-	categoryMap := make(map[CategoryID]string)
+func createCategoryMap(categories []models.Category) map[int]string {
+	categoryMap := make(map[models.CategoryID]string)
 
 	for _, category := range categories {
 		categoryMap[category.ID] = category.Name
