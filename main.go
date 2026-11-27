@@ -111,6 +111,16 @@ func main() {
 		fmt.Println("Продукт успешно обновлен")
 	}
 
+	products, err = storage.DeleteProduct(products, 3)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Продукт успешно удален")
+	}
+
+	fmt.Println("Всего видов продукта после удаления:", len(products))
+
 	categoryMap := createCategoryMap(categories)
 
 	showCategories(categories)

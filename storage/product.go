@@ -37,3 +37,14 @@ func UpdateProduct(products []models.Product, updatedProduct models.Product) err
 
 	return errors.New("Продукт для обновления не найден")
 }
+
+func DeleteProduct(products []models.Product, id models.ProductID) ([]models.Product, error) {
+	for i, product := range products {
+		if product.ID == id {
+			products = append(products[:i], products[i+1:]...)
+			return products, nil
+		}
+	}
+
+	return products, errors.New("Продукт для удаления не найден")
+}
