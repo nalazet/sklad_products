@@ -16,3 +16,13 @@ func AddProduct(products []models.Product, product models.Product) ([]models.Pro
 
 	return products, nil
 }
+
+func FindProductByID(products []models.Product, id models.ProductID) (models.Product, error) {
+	for _, product := range products {
+		if product.ID == id {
+			return product, nil
+		}
+	}
+
+	return models.Product{}, errors.New("Продукт не найден")
+}

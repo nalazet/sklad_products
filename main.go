@@ -83,6 +83,16 @@ func main() {
 
 	fmt.Println("Всего видов продуктов:", len(products))
 
+	foundProduct, err := storage.FindProductByID(products, 2)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Найденный продукт:", foundProduct.Name)
+		fmt.Println("Цена:", foundProduct.Price, "руб.")
+		fmt.Println("Количество:", foundProduct.Quantity, "шт.")
+	}
+
 	categoryMap := createCategoryMap(categories)
 
 	showCategories(categories)
