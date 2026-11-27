@@ -77,6 +77,16 @@ func main() {
 	}
 
 	fmt.Println("Всего категорий:", len(categories))
+
+	foundCategory, err := storage.FindCategoryByID(categories, 3)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Найденная категория:", foundCategory.Name)
+		fmt.Println("Описание:", foundCategory.Description)
+	}
+
 	products := []models.Product{product1, product2}
 
 	product3 := models.Product{

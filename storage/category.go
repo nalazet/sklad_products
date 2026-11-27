@@ -16,3 +16,13 @@ func AddCategory(categories []models.Category, category models.Category) ([]mode
 
 	return categories, nil
 }
+
+func FindCategoryByID(categories []models.Category, id models.CategoryID) (models.Category, error) {
+	for _, category := range categories {
+		if category.ID == id {
+			return category, nil
+		}
+	}
+
+	return models.Category{}, errors.New("Категория не найдена")
+}
