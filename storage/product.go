@@ -26,3 +26,14 @@ func FindProductByID(products []models.Product, id models.ProductID) (models.Pro
 
 	return models.Product{}, errors.New("Продукт не найден")
 }
+
+func UpdateProduct(products []models.Product, updatedProduct models.Product) error {
+	for i, product := range products {
+		if product.ID == updatedProduct.ID {
+			products[i] = updatedProduct
+			return nil
+		}
+	}
+
+	return errors.New("Продукт для обновления не найден")
+}

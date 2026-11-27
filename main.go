@@ -93,6 +93,24 @@ func main() {
 		fmt.Println("Количество:", foundProduct.Quantity, "шт.")
 	}
 
+	updatedProduct := models.Product{
+		ID:          2,
+		Name:        "Хлеб",
+		Description: "Белый хлеб",
+		Price:       67,
+		Quantity:    30,
+		CategoryID:  2,
+		IsActive:    true,
+	}
+
+	err = storage.UpdateProduct(products, updatedProduct)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Продукт успешно обновлен")
+	}
+
 	categoryMap := createCategoryMap(categories)
 
 	showCategories(categories)
