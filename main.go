@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"sklad_products/models"
@@ -178,6 +179,26 @@ func main() {
 	showProducts(products, categoryMap)
 
 	http.HandleFunc("/", homeHandler)
+
+	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+		err := json.NewEncoder(w).Encode(products)
+
+		if err != nil {
+			fmt.Println("Ошибка преобразования продуктов в JSON:", err)
+		}
+	})
+
+	http.HandleFunc("/categories", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+		err := json.NewEncoder(w).Encode(categories)
+
+		if err != nil {
+			fmt.Println("Ошибка преобразования категорий в JSON:", err)
+		}
+	})
 
 	fmt.Println("Сервер запущен: http://localhost:8080")
 
