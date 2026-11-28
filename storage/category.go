@@ -37,3 +37,14 @@ func UpdateCategory(categories []models.Category, updatedCategory models.Categor
 
 	return errors.New("Категория для обновления не найдена")
 }
+
+func DeleteCategory(categories []models.Category, id models.CategoryID) ([]models.Category, error) {
+	for i, category := range categories {
+		if category.ID == id {
+			categories = append(categories[:i], categories[i+1:]...)
+			return categories, nil
+		}
+	}
+
+	return categories, errors.New("Категория для удаления не найдена")
+}

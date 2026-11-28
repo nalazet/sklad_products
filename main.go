@@ -101,6 +101,16 @@ func main() {
 		fmt.Println("Категория успешно обновлена")
 	}
 
+	categories, err = storage.DeleteCategory(categories, 3)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Категория успешно удалена")
+	}
+
+	fmt.Println("Всего категорий после удаления:", len(categories))
+
 	products := []models.Product{product1, product2}
 
 	product3 := models.Product{
