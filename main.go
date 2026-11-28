@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"sklad_products/models"
 	"sklad_products/storage"
 )
@@ -175,6 +176,16 @@ func main() {
 
 	showCategories(categories)
 	showProducts(products, categoryMap)
+
+	http.HandleFunc("/", homeHandler)
+
+	fmt.Println("Сервер запущен: http://localhost:8080")
+
+	err = http.ListenAndServe(":8080", nil)
+
+	if err != nil {
+		fmt.Println("Ошибка запуска сервера:", err)
+	}
 }
 
 func showCategories(categories []models.Category) {
@@ -215,4 +226,9 @@ func createCategoryMap(categories []models.Category) map[int]string {
 		categoryMap[category.ID] = category.Name
 	}
 	return categoryMap
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	fmt.Fprintln(w, "Добро пожаловать на склад продуктов!")
 }
