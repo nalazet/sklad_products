@@ -26,3 +26,14 @@ func FindCategoryByID(categories []models.Category, id models.CategoryID) (model
 
 	return models.Category{}, errors.New("Категория не найдена")
 }
+
+func UpdateCategory(categories []models.Category, updatedCategory models.Category) error {
+	for i, category := range categories {
+		if category.ID == updatedCategory.ID {
+			categories[i] = updatedCategory
+			return nil
+		}
+	}
+
+	return errors.New("Категория для обновления не найдена")
+}

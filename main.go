@@ -87,6 +87,20 @@ func main() {
 		fmt.Println("Описание:", foundCategory.Description)
 	}
 
+	updatedCategory := models.Category{
+		ID:          3,
+		Name:        "Овощи и фрукты",
+		Description: "Свежие овощи и фрукты",
+	}
+
+	err = storage.UpdateCategory(categories, updatedCategory)
+
+	if err != nil {
+		fmt.Println("Ошибка:", err)
+	} else {
+		fmt.Println("Категория успешно обновлена")
+	}
+
 	products := []models.Product{product1, product2}
 
 	product3 := models.Product{
